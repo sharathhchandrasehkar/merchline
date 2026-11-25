@@ -1,0 +1,45 @@
+# Render Blueprint: one free Node web service (API) and one free static site (Angular).
+# The database lives on Neon's free plan; paste its connection string into DATABASE_URL when Render asks.
+services:
+  - type: web
+    name: merchline-api
+    runtime: node
+    plan: free
+    rootDir: server
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: DATABASE_URL
+        sync: false
+      - key: SEED_STYLES
+        value: "3000"
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: CORS_ORIGIN
+        sync: false
+
+  - type: web
+    name: merchline-web
+    runtime: static
+    rootDir: web
+    buildCommand: npm ci && npm run build:prod
+    staticPublishPath: dist/web/browser
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: API_HOST
+        fromService:
+          type: web
+          name: merchline-api
+          property: host
+    routes:
+      - type: rewrite
+        source: /*
+        destination: /index.html
+    headers:
+      - path: /env.js
+        name: Cache-Control
+        value: no-cache

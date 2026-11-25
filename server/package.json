@@ -1,0 +1,43 @@
+{
+  "name": "merchline-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Merchline API: product data model explorer and trace-to-season reporting (Node.js, Express, PostgreSQL).",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc -p tsconfig.json",
+    "start": "node dist/index.js",
+    "seed": "tsx src/seed/run.ts",
+    "seed:prod": "node dist/seed/run.js",
+    "db:local": "tsx scripts/local-db.ts",
+    "test": "node --import tsx --test --test-concurrency=1 test/*.test.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.14.0",
+    "compression": "^1.8.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "pg": "^8.16.0",
+    "pg-copy-streams": "^7.0.0",
+    "zod": "^4.1.0"
+  },
+  "devDependencies": {
+    "@types/compression": "^1.8.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.18.0",
+    "@types/pg": "^8.15.0",
+    "@types/pg-copy-streams": "^1.2.5",
+    "@types/supertest": "^6.0.3",
+    "embedded-postgres": "17.12.0-beta.19",
+    "supertest": "^7.1.0",
+    "tsx": "^4.20.0",
+    "typescript": "~6.0.3"
+  }
+}

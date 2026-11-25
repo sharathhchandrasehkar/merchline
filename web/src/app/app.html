@@ -1,0 +1,52 @@
+<a class="skip" href="#main">Skip to content</a>
+<header class="topbar">
+  <div class="wrap topbar-in">
+    <a class="brand" routerLink="/" aria-label="Merchline home">
+      <svg viewBox="0 0 32 32" width="28" height="28" aria-hidden="true"><rect width="32" height="32" rx="8" class="brand-bg"/><path d="M7 22 L12 10 L16 18 L20 10 L25 22" fill="none" class="brand-fg" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <span>Merchline</span>
+    </a>
+    <nav class="nav" aria-label="Main">
+      <a routerLink="/" routerLinkActive="on" [routerLinkActiveOptions]="{ exact: true }">Home</a>
+      <a routerLink="/explore/Product" routerLinkActive="on">Explore</a>
+      <a routerLink="/trace" routerLinkActive="on">Trace to season</a>
+      <a routerLink="/overview" routerLinkActive="on">Overview</a>
+    </nav>
+    <div class="search" role="combobox" aria-haspopup="listbox" [attr.aria-expanded]="open()">
+      <input type="search" [(ngModel)]="query" (ngModelChange)="onType($event)" (blur)="closeSoon()" (focus)="open.set(results().length > 0)"
+             placeholder="Search styles, materials, suppliers or paste an ID" aria-label="Search the catalog" />
+      @if (open() && results().length) {
+        <ul class="results" role="listbox">
+          @for (r of results(); track r.entity + r.id) {
+            <li role="option"><button type="button" (mousedown)="pick(r)"><ml-thumb [thumb]="r.thumb" [size]="28" />
+              <span class="rl">{{ r.label }}</span><span class="rid">{{ catalog.singular(r.entity) }}</span></button></li>
+          }
+        </ul>
+      }
+    </div>
+    <div class="prefs">
+      <div class="seg sm" role="group" aria-label="Audience">
+        <button type="button" [attr.aria-pressed]="!catalog.technical()" (click)="catalog.setTechnical(false)">Business</button>
+        <button type="button" [attr.aria-pressed]="catalog.technical()" (click)="catalog.setTechnical(true)">Technical</button>
+      </div>
+      <button type="button" class="btn ghost" (click)="cycleTheme()" [attr.aria-label]="'Theme: ' + catalog.theme()">
+        {{ catalog.theme() === 'system' ? 'Auto' : catalog.theme() === 'dark' ? 'Dark' : 'Light' }}
+      </button>
+    </div>
+  </div>
+</header>
+@if (catalog.waking()) {
+  <div class="banner" role="status">
+    <div class="wrap">
+      @if (catalog.error()) { {{ catalog.error() }} }
+      @else if (catalog.health()?.seeding) { Setting up the demo catalog for the first time. This takes about a minute. {{ catalog.health()?.message }} }
+      @else { Waking up the free server. This can take up to a minute after it has been idle. }
+    </div>
+  </div>
+}
+<main id="main" class="wrap">
+  <router-outlet />
+</main>
+<footer class="wrap foot">
+  <span>Merchline · a product data explorer built with Angular, Node.js and PostgreSQL. Demo data is synthetic.</span>
+  <a href="https://github.com/sharathhchandrasehkar/merchline" target="_blank" rel="noopener" id="repo-link">Source on GitHub</a>
+</footer>
