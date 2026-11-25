@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "angular.ng-template",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg",
+    "github.vscode-github-actions"
+  ]
+}

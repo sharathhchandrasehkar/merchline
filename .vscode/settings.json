@@ -1,0 +1,16 @@
+{
+  "files.exclude": { "**/node_modules": true, "**/.angular": true, "**/dist": true, "**/.pgdata": true },
+  "search.exclude": { "**/package-lock.json": true },
+  "typescript.tsdk": "web/node_modules/typescript/lib",
+  "sqltools.connections": [
+    {
+      "name": "Merchline (local)",
+      "driver": "PostgreSQL",
+      "server": "localhost",
+      "port": 5433,
+      "database": "merchline",
+      "username": "postgres",
+      "password": "postgres"
+    }
+  ]
+}

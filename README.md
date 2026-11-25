@@ -63,28 +63,22 @@ flowchart LR
 
 ## Run it locally
 
-You need Node 22. No Docker or Postgres install is required, because the API can start an embedded Postgres.
+You need **Node.js 22+** and **Git**. Docker and a Postgres install aren't needed, because the project runs an embedded Postgres for development.
 
 ```bash
-# 1. API + database
-cd server
-npm install
-npm run db:local          # embedded Postgres on :5433 (keep this terminal open)
-
-# in a second terminal
-cd server
-cp .env.example .env      # defaults point at the embedded database
-npm run dev               # API on :3000; seeds 3,000 styles on first start (~30 s)
-
-# 2. Web app, in a third terminal
-cd web
-npm install
-npm start                 # http://localhost:4200, proxies /api to :3000
+git clone https://github.com/sharathhchandrasehkar/merchline.git
+cd merchline
+npm run setup      # installs root, server and web; creates server/.env
+npm run dev        # database :5433, API :3000, web http://localhost:4200
 ```
 
-Run the tests with `cd server && npm test`. They wipe and reseed the database in `DATABASE_URL`, so point it at a test database.
+The first start loads 3,000 synthetic styles, which takes about 30 seconds. Then open http://localhost:4200.
 
-To enable Claude, set `ANTHROPIC_API_KEY` in `server/.env`.
+**In VS Code:** open the folder and accept the recommended extensions. Run the task *Merchline: setup (first time)* once, then press **Ctrl+Shift+B** to start everything. **Run and Debug → Full stack** starts the API and web app with breakpoints. The SQLTools extension comes preconfigured to browse the local database.
+
+Run the API tests with the VS Code task *API: tests*, or `npm test` with `DATABASE_URL` pointing at a test database. They wipe and reseed that database.
+
+To enable Claude, set `ANTHROPIC_API_KEY` in `server/.env` and restart the API.
 
 ## Deploy for free
 

@@ -1,0 +1,70 @@
+{
+  // Ctrl+Shift+B runs "Merchline: start all". Each piece also runs on its own from Terminal > Run Task.
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Merchline: setup (first time)",
+      "type": "shell",
+      "command": "npm run setup",
+      "problemMatcher": []
+    },
+    {
+      "label": "DB: local Postgres",
+      "type": "shell",
+      "command": "npm run db:local",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "isBackground": true,
+      "presentation": { "group": "merchline", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "merchline-db",
+        "pattern": { "regexp": "^__never__$" },
+        "background": { "activeBegins": true, "beginsPattern": ".", "endsPattern": "Postgres is running" }
+      }
+    },
+    {
+      "label": "API: dev server",
+      "type": "shell",
+      "command": "npm run dev",
+      "options": { "cwd": "${workspaceFolder}/server" },
+      "dependsOn": "DB: local Postgres",
+      "isBackground": true,
+      "presentation": { "group": "merchline", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "merchline-api",
+        "pattern": { "regexp": "^__never__$" },
+        "background": { "activeBegins": true, "beginsPattern": ".", "endsPattern": "listening on" }
+      }
+    },
+    {
+      "label": "Web: ng serve",
+      "type": "shell",
+      "command": "npm start",
+      "options": { "cwd": "${workspaceFolder}/web" },
+      "isBackground": true,
+      "presentation": { "group": "merchline", "panel": "dedicated" },
+      "problemMatcher": {
+        "owner": "merchline-web",
+        "pattern": { "regexp": "^__never__$" },
+        "background": { "activeBegins": true, "beginsPattern": ".", "endsPattern": "Local:.*localhost|Watch mode enabled" }
+      }
+    },
+    {
+      "label": "Merchline: start all",
+      "dependsOn": ["API: dev server", "Web: ng serve"],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": []
+    },
+    {
+      "label": "API: tests",
+      "type": "shell",
+      "command": "npm test",
+      "options": {
+        "cwd": "${workspaceFolder}/server",
+        "env": { "DATABASE_URL": "postgres://postgres:postgres@localhost:5433/merchline_test" }
+      },
+      "dependsOn": "DB: local Postgres",
+      "group": "test",
+      "problemMatcher": []
+    }
+  ]
+}

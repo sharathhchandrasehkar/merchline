@@ -19,7 +19,9 @@ const pg = new EmbeddedPostgres({
 const fresh = !(await import('node:fs')).existsSync(path.join(DIR, 'PG_VERSION'));
 if (fresh) await pg.initialise();
 await pg.start();
-if (fresh) await pg.createDatabase('merchline');
+for (const db of ['merchline', 'merchline_test']) {
+  try { await pg.createDatabase(db); } catch { /* already exists */ }
+}
 console.log(`Postgres is running. DATABASE_URL=postgres://postgres:postgres@localhost:${port}/merchline`);
 const stop = async () => { await pg.stop(); process.exit(0); };
 process.on('SIGINT', stop);

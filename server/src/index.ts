@@ -1,3 +1,4 @@
+import './env.js';
 import { createApp } from './app.js';
 import { pool } from './db.js';
 import { resetCaches, tableCounts } from './lib/records.js';

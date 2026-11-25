@@ -1,0 +1,36 @@
+{
+  // Run and Debug (Ctrl+Shift+D): pick "Full stack" to debug the API and the Angular app together.
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug API",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/server",
+      "runtimeArgs": ["--import", "tsx"],
+      "program": "${workspaceFolder}/server/src/index.ts",
+      "preLaunchTask": "DB: local Postgres",
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "**/node_modules/**"]
+    },
+    {
+      "name": "Debug web (Edge)",
+      "type": "msedge",
+      "request": "launch",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/web",
+      "preLaunchTask": "Web: ng serve"
+    },
+    {
+      "name": "Debug web (Chrome)",
+      "type": "chrome",
+      "request": "launch",
+      "url": "http://localhost:4200",
+      "webRoot": "${workspaceFolder}/web",
+      "preLaunchTask": "Web: ng serve"
+    }
+  ],
+  "compounds": [
+    { "name": "Full stack", "configurations": ["Debug API", "Debug web (Edge)"], "stopAll": true }
+  ]
+}

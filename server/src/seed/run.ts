@@ -1,3 +1,4 @@
+import '../env.js';
 /** npm run seed -- [styles]   (default: SEED_STYLES or 3000) */
 import { pool } from '../db.js';
 import { seed } from './load.js';
